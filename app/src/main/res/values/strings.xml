@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">TestVKApp2024</string>
+    <string name="load_error">Oops, can\\\'t load data</string>
+    <string name="try_again">try again</string>
+    <string name="search_by">search</string>
+    <string name="price">price:%1$d$</string>
 </resources>
