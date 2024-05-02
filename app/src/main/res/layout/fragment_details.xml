@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -50,22 +49,16 @@
             android:gravity="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
             app:layout_constraintBottom_toTopOf="@id/descriptionTextView"
-            app:layout_constraintEnd_toStartOf="@id/box"
+            app:layout_constraintEnd_toStartOf="@id/ratingBar"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/images"
             tools:text="Iphone 9" />
 
-        <LinearLayout
-            android:id="@+id/box"
-            android:orientation="vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/titleTextView"
-            app:layout_constraintTop_toBottomOf="@id/images"
-            app:layout_constraintBottom_toTopOf="@id/descriptionTextView"
-            >
+
             <RatingBar
+                android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/images"
                 android:isIndicator="true"
                 android:id="@+id/ratingBar"
                 style="@style/ShapeAppearance.Material3.Corner.ExtraSmall"
@@ -77,6 +70,10 @@
                 />
 
             <TextView
+                app:layout_constraintBottom_toTopOf="@id/descriptionTextView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/titleTextView"
+                app:layout_constraintTop_toBottomOf="@id/ratingBar"
                 android:layout_weight="1"
                 android:layout_gravity="center"
                 android:id="@+id/priceTextView"
@@ -85,7 +82,7 @@
                 android:gravity="center"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
                 tools:text="Price: " />
-        </LinearLayout>
+
 
 
 

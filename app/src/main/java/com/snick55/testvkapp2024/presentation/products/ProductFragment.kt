@@ -36,7 +36,6 @@ class ProductFragment : Fragment(R.layout.fragment_products) {
         setupProductsList()
         setupSearch()
         setupSwipeToRefresh()
-
     }
 
     private fun setupSearch() {
@@ -67,7 +66,6 @@ class ProductFragment : Fragment(R.layout.fragment_products) {
         observeProducts(adapter)
         observeLoadState(adapter)
         handleListVisibility(adapter)
-        handleScrollingToTopWhenSearching(adapter)
     }
 
 
@@ -89,18 +87,6 @@ class ProductFragment : Fragment(R.layout.fragment_products) {
         }
     }
 
-    private fun handleScrollingToTopWhenSearching(adapter: ProductsAdapter) =
-        viewLifecycleOwner.lifecycleScope.launch {
-            getRefreshLoadStateFlow(adapter)
-                .simpleScan(count = 2)
-                .collectLatest { (previousState, currentState) ->
-                    if (previousState is LoadState.Loading && currentState is LoadState.NotLoading) {
-                        binding.productsRecyclerView.scrollToPosition(0)
-                    }
-                }
-
-        }
-
     private fun getRefreshLoadStateFlow(adapter: ProductsAdapter): Flow<LoadState> {
         return adapter.loadStateFlow
             .map { it.refresh }
@@ -115,7 +101,6 @@ class ProductFragment : Fragment(R.layout.fragment_products) {
             }
         }
     }
-
     @OptIn(FlowPreview::class)
     private fun observeLoadState(adapter: ProductsAdapter) {
         lifecycleScope.launch {

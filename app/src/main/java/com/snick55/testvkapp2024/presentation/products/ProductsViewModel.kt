@@ -29,6 +29,7 @@ class ProductsViewModel @Inject constructor(
 
 
     private var job: Job? = null
+    private var searchJob: Job? = null
 
     private val search = MutableLiveData("")
 
@@ -37,41 +38,52 @@ class ProductsViewModel @Inject constructor(
 
     val products: StateFlow<PagingData<Product>> = innerProducts.asStateFlow()
 
-
-
-
     init {
-        job = loadProducts()
+        loadProducts()
         search()
     }
 
-
     fun setSearch(search: String) {
+        if (this.search.value == search) return
         this.search.value = search
     }
 
     private fun search() = viewModelScope.launch {
-        search.asFlow()
-            .debounce(200)
-            .flatMapLatest {
-                repository.getSearchedPagingProduct(it)
-            }
-            .cachedIn(viewModelScope)
-            .collect {
-                innerProducts.value = it
-            }
+        if (searchJob?.isActive == true) {
+            searchJob?.cancel()
+        }
+        searchJob = viewModelScope.launch {
+            search.asFlow()
+                .debounce(200)
+                .flatMapLatest {
+                    repository.getSearchedPagingProduct(it)
+                }
+                .cachedIn(viewModelScope)
+                .collect {
+                    innerProducts.value = it
+                }
+        }
     }
 
     fun refresh() {
+        searchJob?.cancel()
         job?.cancel()
-        loadProducts()
+        if (search.value.isNullOrEmpty())
+            loadProducts()
+        else
+            search()
     }
 
     private fun loadProducts() = viewModelScope.launch {
+        if (job?.isActive == true) {
+            job?.cancel()
+        }
+        job = viewModelScope.launch {
             repository.getPagedProducts()
                 .cachedIn(viewModelScope)
                 .collect {
                     innerProducts.value = it
                 }
+        }
     }
 }
